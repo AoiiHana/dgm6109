@@ -5,10 +5,16 @@
 
     <body>
         <h1>JM Velez Lab #3</h1>
-        <p>Please enter a temperature in degrees Fahrenheit, so that we may convert it to degrees Celsius.
+        <p>Please enter a temperature in degrees Fahrenheit, so that we may convert it to degrees Celsius or Kelvin.
         Sincerely, the Code Fairies:</p>
         <input type="number" id="inputF" value="75.38"> <!--this is the average temperature of Medellin, Colombia in October as of last year, same as in previous lab but now it's just the default b4 user input-->
-        <button id="submit">Submit temperature</button>
+        <p>Select your temperature scale:</p>
+        <select id="unitChoice">
+            <option value="c">Celsius</option>
+            <option value="k">Kelvin</option>
+        </select>
+        <button id="submit">Convert temperature</button>
+        <div id="output"> </div>
     </body>
 
     <script src="output.js"></script>
