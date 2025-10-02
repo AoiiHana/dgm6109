@@ -8,12 +8,12 @@ let xInput, yInput, choice;
 /*here are the starting variables as outlined in the assignment description
     the origin point is based on the very leftmost point of the duck's body shape as surveyed in the grid*/
 function processForm() {
-    /* Get data from the form */
+    /* this gets the necessary variables from the form */
     xInput = Number(document.getElementById("xInput").value);
     yInput = Number(document.getElementById("yInput").value);
     /*passes value of select menu "species" to var "choice"*/
     choice = document.getElementById("species").value
-    drawing.selectAll('svg>*').remove(); // This line selects everything that has been drawn in the SVG and deletes it all
+    drawing.selectAll('svg>*').remove(); //honestly IDK why we need this here but it doesn't seem to be anything negative so it stays i guess
     drawImage();
 }
 
@@ -35,6 +35,7 @@ function drawImage() {
     let duckY = yInput;
 /*changes the output based on user input*/
     if (choice == "swan"){
+        /*compared to the base "duck" drawing, this significantly changes the shape of the eye, beak, body and wings as well as the overall colour scheme.*/
         let duckBody = drawing.append("polyline")
             .attr("points", closedPolygon(duckX,duckY,
                                   duckX+20,duckY+80,
@@ -88,6 +89,7 @@ function drawImage() {
 }
 
 else if (choice == "goose") {
+    /*this mostly changes the colour of the drawing, but also changes the size and shape of the wings */
     let duckBody = drawing.append("polyline")
         .attr("points", closedPolygon(duckX,duckY,
                                   duckX+20,duckY+80,
