@@ -1,6 +1,7 @@
 "use strict"
 
 /* ************ function duck(canvas, xInput, yInput, orIsVisible, choice) *****
+JM Velez Drawing #8: Duck
 this draws a duck in svg as outlined in project 1 and the lab 5 description
 
 REQUIREMENTS:
@@ -14,7 +15,7 @@ orIsVisible: this determines whether or not the origin point will be visible (de
 choice:     determines whether a duck, goose or swan will be drawn based on user input in the select menu (default: duck)
 
 RETURNS:
-canvas
+canvas:     drawing as placed upon initial canvas defined in function call
 ****************************************************************** */
 
 function duck(canvas = d3.select.append("svg").attr("width", 500).attr("height", 500), xInput, yInput, orIsVisible = false, choice = "duck") {
