@@ -2,19 +2,18 @@
 
 /*
 Pattamaporn Jamjumrus Drawing #12 - Rabbit
-This function draws a rabbit on an SVG canvas.
+This function draws a single rabbit with ears on an SVG canvas.
 
 Parameters:
 - svg: the D3 SVG drawing surface
 - x: horizontal position of the rabbit’s center
 - y: vertical position of the rabbit’s center
 - showOrigin: true/false to show a small pink origin dot
-- choice: optional rabbit style ("earsUp" or "noEarsCarrot")
 Returns:
 - The same SVG canvas with the rabbit added.
 */
 
-function rabbit(svg, x, y, showOrigin, choice) {
+function rabbit(svg, x, y, showOrigin) {
 
     // Group all rabbit parts together
     let rabbitGroup = svg.append("g")
@@ -36,23 +35,14 @@ function rabbit(svg, x, y, showOrigin, choice) {
     let head = rabbitGroup.append("g");
     head.append("circle").attr("cx", x).attr("cy", y - 100).attr("r", 60).attr("fill", "#B5885C");
 
-    // Rabbit Ears or Carrot (based on choice)
-    let extras = rabbitGroup.append("g");
-    if (choice === "earsUp") {
-        extras.append("polygon")
-            .attr("points", `${x + 50},${y - 240} ${x + 30},${y - 150} ${x + 70},${y - 175}`)
-            .attr("fill", "#B5885C");
-        extras.append("polygon")
-            .attr("points", `${x - 50},${y - 240} ${x - 30},${y - 150} ${x - 70},${y - 175}`)
-            .attr("fill", "#B5885C");
-    } else if (choice === "noEarsCarrot") {
-        extras.append("polygon")
-            .attr("points", `${x - 20},${y - 20} ${x + 20},${y - 20} ${x},${y + 20}`)
-            .attr("fill", "green");
-        extras.append("polygon")
-            .attr("points", `${x - 25},${y} ${x + 25},${y} ${x},${y + 80}`)
-            .attr("fill", "orange");
-    }
+    // Rabbit Ears (fixed, normal)
+    let ears = rabbitGroup.append("g");
+    ears.append("polygon")
+        .attr("points", `${x + 50},${y - 240} ${x + 30},${y - 150} ${x + 70},${y - 175}`)
+        .attr("fill", "#B5885C");
+    ears.append("polygon")
+        .attr("points", `${x - 50},${y - 240} ${x - 30},${y - 150} ${x - 70},${y - 175}`)
+        .attr("fill", "#B5885C");
 
     // Rabbit Eyes
     let eyes = rabbitGroup.append("g");
