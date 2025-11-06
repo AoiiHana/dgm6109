@@ -328,18 +328,7 @@ for (let i = 0; i < 3; i++){ //adds params to keyLabel and draws them on the can
         .text(String(keyData[i].rValue) + " hrs")
 }
 
-/*let greenCircle = svg.append("circle")
-    .attr("cx", xScale(2.85))
-    .attr("cy", (bottomMargin * 2) + 5)
-    .attr("r", 7.75)
-    .attr("fill", "green")
-
-let redCircle = svg.append("circle")
-    .attr("cx", xScale(2.85))
-    .attr("cy", (bottomMargin * 4) )
-    .attr("r", 7.75)
-    .attr("fill", "red")*/
-
+/*initially i declared both of these objects separately with svg.append, but i later realized that the same array + svg.selectAll method i used for the size key would work more efficiently for the color key as well */
 let colorKey = [ {
     xValue: xScale(2.85),
     yValue: ((bottomMargin * 2) + 10),
@@ -374,17 +363,7 @@ let colorKeyLabel = svg.append("text")
     .attr("text-anchor", "start")
     .text("Time spent offline")
 
-/*for (let i = 0; i < 2; i++){
-    colorKeyLabel[i] = svg.append("text")
-        .attr("x", colorKey[i].xValue + 10)
-        .attr("y", colorKey[i].yValue)
-        .attr("text-anchor", "start")
-        .text("Placeholder")
-}
-
-colorKeyLabel[0].text = "12 hours or less"
-colorKeyLabel[1].text = "More than 12 hours"*/
-
+/*i had to declare and append each label separately because the loop method didn't allow me to properly append the contents of each text label*/
 let greenLabel = svg.append("text")
     .attr("x", colorKey[0].xValue + 15)
     .attr("y", colorKey[0].yValue)
@@ -399,13 +378,14 @@ let redLabel = svg.append("text")
     .attr("alignment-baseline", "middle")
     .text("More than 12 hours")
 
+/*these are both the boxes for the keys, each one constructed in the same way*/
 let sizeLabelBox = svg.append("rect")
     .attr("x", ((sideMargin * 2)- 20))
     .attr("y", (topMargin - 20))
     .attr("width", 180)
     .attr("height", 150)
     .attr("stroke", "black")
-    .attr("fill", "transparent")
+    .attr("fill", "transparent") //method for making fully transparent SVG elements found via Google Gemini
 
 let colorLabelBox = svg.append("rect")
     .attr("x", ((xScale(2.85))- 20))
