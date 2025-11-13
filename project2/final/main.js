@@ -2,7 +2,7 @@
 
 /* blah blah blah global variables you get the gist
     see comment in processForm for more info
-    i wanted to code these w/in processForm or as its parameters b/c global vars aren't good coding practice but i also wasn't sure if that was allowed so i left this declaration as is*/
+    i wanted to code these w/in processForm or as its parameters b/c global vars aren't good coding practice FWIH but i also wasn't sure if that was allowed so i left this declaration as is*/
 let combo, amount, zipCode, comboChoice, comboName;
 
 
@@ -51,7 +51,7 @@ function processForm() {
     i moved the "return true" declaration to be inside the if-else statement as part of the initial debug process for the else-if part of the statement
     isInteger method found via https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger*/
 function validateData() {
-    if (amount < 1 || isNaN(amount)||!Number.isInteger(amount)) {
+    if (amount < 1 || isNaN(amount)||!Number.isInteger(amount)) { //same as in the draft, however now the initial if-statement also checks if the amount is an integer, that was moved out of evaluateAnswers() to simplify the validation process + better follow the flowchart
         output("Please enter a valid number greater than zero for the amount you would like to order.");
         return false;
     }
