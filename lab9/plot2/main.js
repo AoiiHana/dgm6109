@@ -226,21 +226,18 @@ let dataset = [{
     date: "11/10/2025"
 }];
 
-/*sorts the dataset so the circles draw properly upon one another*/
-dataset.sort(function(a,b){
-    if (new Date(a.date) < new Date(b.date)){
-        return -1;
-    }
-    return 1;
-})
+/*filters data to only display those points where timeOnClasswork > 0 
+let filteredData = dataset.filter(function(value){
+    return value.timeOnClasswork != 0;
+})*/
 
-/*these two functions allowed for significant simplification of the code*/
-let minTimeOnline = d3.min(dataset, function(value){
-    return value.timeOnline;
+/*these two functions allowed for significant simplification of the code——now they track time offline rather than time online*/
+let minTimeOffline = d3.min(dataset, function(value){
+    return value.timeOffline;
 });
 
-let maxTimeOnline = d3.max(dataset, function(value){
-    return value.timeOnline;
+let maxTimeOffline = d3.max(dataset, function(value){
+    return value.timeOffline;
 })
 
 let xScale = d3.scaleLinear()
@@ -248,7 +245,7 @@ let xScale = d3.scaleLinear()
     .range([sideMargin, svgWidth - sideMargin]);
 
 let yScale = d3.scaleLinear()
-    .domain([0, 550])
+    .domain([0, 600])
     .range([svgHeight - bottomMargin, topMargin]);
 
 let xLine = svg.append("line")
@@ -262,7 +259,7 @@ let yLine = svg.append("line")
     .attr("x1", xScale(0))
     .attr("y1", yScale(0))
     .attr("x2", xScale(0))
-    .attr("y2", yScale(550))
+    .attr("y2", yScale(600))
     .attr("stroke", "black")
 
 let circles = svg.selectAll("circle")
@@ -270,7 +267,7 @@ let circles = svg.selectAll("circle")
     .join("circle");
 
 circles.attr("r", 10)
-/*sets X value to reflect timeOnline parameter from array dataset, each param multiplied by 50 to fill the whole scale of the plot */
+/*sets X value to reflect timeOnClasswork parameter from array dataset, each param multiplied by 200 to better fill the whole scale of the plot */
     .attr("cx", function (dataset) {
         return (sideMargin + (dataset.timeOnClasswork * 200));
     })
@@ -281,8 +278,11 @@ circles.attr("r", 10)
     })
     .attr("opacity", 1) //since we now use colour to differentiate the circles based on time offline, opacity was no longer needed, i'm still going to need to figure out how to differentiate circles that overlap tho
     .attr("fill", function(dataset){
-        if (dataset.timeOffline >= 12){
+        if (dataset.timeOnline < 10){
             return "green";
+        }
+        else if (dataset.timeOnline >= 10 && dataset.timeOnline <= 14){
+            return "blue";
         }
         else {
             return "red";
@@ -291,8 +291,8 @@ circles.attr("r", 10)
 
 /*switching to d3.min/max allowed me to simplify the code to use just one rScale variable for the entire program*/
 let rScale = d3.scaleSqrt()
-    .domain([minTimeOnline, maxTimeOnline])
-    .range([minTimeOnline, maxTimeOnline]) 
+    .domain([minTimeOffline, maxTimeOffline])
+    .range([minTimeOffline, maxTimeOffline]) 
 
 circles.attr("r", function(dataset){
     return rScale(dataset.timeOnline);
@@ -306,15 +306,15 @@ let keyYCoord = (topMargin * 2);
 let keyData = [{
     xValue: keyXCoord,
     yValue: keyYCoord,
-    rValue: maxTimeOnline
+    rValue: maxTimeOffline
 }, {
     xValue: keyXCoord,
     yValue: (keyYCoord - (bottomMargin * 2)),
-    rValue: ((minTimeOnline + maxTimeOnline) / 2)
+    rValue: ((minTimeOffline + maxTimeOffline) / 2)
 }, {
     xValue: keyXCoord,
     yValue: (keyYCoord - (bottomMargin * 3.5)),
-    rValue: minTimeOnline
+    rValue: minTimeOffline
 }];
 
 /*there was an additional scaleLinear call here for determining the sizes of the key circles. it ended up being redundant w/d3.min/max so it's gone now*/
@@ -382,7 +382,7 @@ let keyFullLabel = svg.append("text")
     .attr("x", (sideMargin * 2) - 10) 
     .attr("y", topMargin - 5)
     .attr("text-anchor", "start")
-    .text("Time spent online (hrs)")
+    .text("Time spent offline (hrs)")
 
 let keyCirclesLabel = [] //this variable is for labelling each circle in the key
 
@@ -392,19 +392,24 @@ for (let i = 0; i < 3; i++){ //adds params to keyLabel and draws them on the can
         .attr("y", ((bottomMargin * 2) + keyData[i].yValue))
         .attr("text-anchor", "start")
         .attr("alignment-baseline", "middle")
-        .text(String(keyData[i].rValue) + " hrs")
+        .text(String(keyData[i].rValue.toFixed(3)) + " hrs")
 }
 
 /*initially i declared both of these objects separately with svg.append, but i later realized that the same array + svg.selectAll method i used for the size key would work more efficiently for the color key as well */
 let colorKey = [ {
     xValue: xScale(2.85),
     yValue: ((bottomMargin * 2) + 10),
-    rValue: ((minTimeOnline + maxTimeOnline) / 2),
+    rValue: ((minTimeOffline + maxTimeOffline) / 2),
     color: "green"
 }, {
     xValue: xScale(2.85),
-    yValue: ((bottomMargin * 3) + 10),
-    rValue: ((minTimeOnline + maxTimeOnline) / 2),
+    yValue: ((bottomMargin * 3) + 20),
+    rValue: ((minTimeOffline + maxTimeOffline) / 2),
+    color: "blue"
+},{
+    xValue: xScale(2.85),
+    yValue: ((bottomMargin * 4) + 30),
+    rValue: ((minTimeOffline + maxTimeOffline) / 2),
     color: "red"
 }]
 
@@ -428,7 +433,7 @@ let colorKeyLabel = svg.append("text")
     .attr("x", xScale(2.85))
     .attr("y", topMargin - 5)
     .attr("text-anchor", "start")
-    .text("Time spent offline")
+    .text("Time spent online")
 
 /*i had to declare and append each label separately because the loop method didn't allow me to properly append the contents of each text label*/
 let greenLabel = svg.append("text")
@@ -436,14 +441,14 @@ let greenLabel = svg.append("text")
     .attr("y", colorKey[0].yValue)
     .attr("text-anchor", "start")
     .attr("alignment-baseline", "middle")
-    .text("More than 12 hours")
+    .text("12 hours or less")
 
 let redLabel = svg.append("text")
     .attr("x", colorKey[1].xValue + 15)
     .attr("y", colorKey[1].yValue)
     .attr("text-anchor", "start")
     .attr("alignment-baseline", "middle")
-    .text("12 hours or less")
+    .text("More than 12 hours")
 
 /*these are both the boxes for the keys, each one constructed in the same way*/
 let sizeLabelBox = svg.append("rect")
@@ -458,7 +463,7 @@ let colorLabelBox = svg.append("rect")
     .attr("x", ((xScale(2.85))- 20))
     .attr("y", (topMargin - 20))
     .attr("width", 180)
-    .attr("height", 70)
+    .attr("height", 80)
     .attr("stroke", "black")
     .attr("fill", "transparent")
 
