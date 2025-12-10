@@ -18,7 +18,7 @@ let margin = {
     left: 80
 }
 
-/* VexFlow provides its own methods to draw to svg, so basically all of this code got commented out. i might use it to draw the key, so i'm leaving it here for the time being */
+/* VexFlow provides its own methods to draw to svg, so basically all of this code got commented out and later deleted */
 
 /* dataset ended up being the only global variable i needed for this project, so all the others were removed
     honestly i probably could've just defined it within async but i figured it was better not to risk any code breaking*/
