@@ -288,7 +288,7 @@ function drawKey() {
     let keyNotes = [
         new StaveNote({keys: ["c/4"], duration: "q"}).addModifier(new Annotation("<4 hours").setVerticalJustification("bottom"), 0), //here we have a new element, addModifier, which adds an additional svg element to a note object (in this case an annotation, to display which values are which in the key)
 
-        new StaveNote({keys: ["c/5"], duration: "q"}).addModifier(new Annotation(">15 hours").setVerticalJustification("top"), 0),
+        new StaveNote({keys: ["c/5"], duration: "q"}).addModifier(new Annotation(">15 hours").setVerticalJustification("bottom"), 0),
 
         new StaveNote({keys: ["f/4"], duration: "16"}).addModifier(new Annotation("<50 words").setVerticalJustification("bottom"), 0),
 
@@ -302,6 +302,8 @@ function drawKey() {
 
     ]
 
+    keyNotes[0].addModifier(new Annotation("Time online:").setVerticalJustification("top"), 0)
+    keyNotes[2].addModifier(new Annotation("Words written:").setVerticalJustification("top"), 0)
     //once again this part of the code is identical to the equivalent part in drawVisualization
     const keyVoice = new Voice({
         num_beats: keyNotes.length,
