@@ -20,29 +20,8 @@ let margin = {
 
 /* VexFlow provides its own methods to draw to svg, so basically all of this code got commented out. i might use it to draw the key, so i'm leaving it here for the time being */
 
-/*let svg = d3.select("#canvas")
-    .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight)
-
-svg.append("rect")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight)
-    .attr("fill", "none")
-    .attr("stroke", "black")*/
-
-/* let viz = svg.append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`)
-
-viz.append("rect")
-    .attr("width", svgWidth - (margin.left + margin.right))
-    .attr("height", svgHeight - (margin.top + margin.bottom))
-    .attr("fill", "none")
-    .attr("stroke", "black")
-    .attr("stroke-dasharray", "5,5") */
-
 /* dataset ended up being the only global variable i needed for this project, so all the others were removed
-    honestly i probably could've jut defined it within async but i figured it was better not to risk any code breaking*/
+    honestly i probably could've just defined it within async but i figured it was better not to risk any code breaking*/
 
 
 let dataset
