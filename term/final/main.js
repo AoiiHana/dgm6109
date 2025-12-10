@@ -178,6 +178,7 @@ function getLength(dataset) {
  * returns: none (but draws the sheet music to the svg in the html)
 *****/
 function drawVisualization(pitch, length) {
+    //i kept most of the const elements from VexFlow as const in order to not risk potential unforeseen errors or bugs from declaring them as let in javascript
     const VexFlow = Vex.Flow; //calls the VexFlow library w/in the function
     
     const { Renderer, Stave, StaveNote, Formatter, Voice } = VexFlow; //unpacks necessary classes from VexFlow for use w/in the function
@@ -253,21 +254,26 @@ function drawVisualization(pitch, length) {
     context.fillText("Relationship between time online and number of words written", 250, margin.top, { align: "center" }); //draws the title to the svg; 250 and margin.top are the x and y positions, respectively
 }
 
-
+/***** function drawKey() ****
+ * this function uses the same methods from the VexFlow library as drawVisualization to draw the key for the visualization, with the addition of annotations attached to each note object
+ * 
+ * parameters: none
+ * 
+ * returns: none (but draws key )
+ *****/
 
 function drawKey() {
 
     let keyWidth = 1200;
     let keyHeight = 200;
-    let keyYPosition = 100;
 
-    const VexFlow = Vex.Flow; //calls the VexFlow library w/in the function
+    //the following section of code is fully identical to that in drawVisualization, but with variable names changed + some parameters tweaked (most notably render destination)
+    const VexFlow = Vex.Flow; 
     
-    const { Renderer, Stave, StaveNote, Formatter, Voice, Annotation } = VexFlow; //unpacks necessary classes from VexFlow for use w/in the function
+    const { Renderer, Stave, StaveNote, Formatter, Voice, Annotation } = VexFlow; 
     
-    //creates renderer object for drawing sheet music using standard syntax of VexFlow and sets it to draw to the canvas div in the html
     const keyRenderer = new Renderer(
-        document.getElementById('key'),
+        document.getElementById('key'), //we make the key draw to another element in the html page to avoid bugs involving drawing multiple svg elements to the same canvas
         Renderer.Backends.SVG
     );
     keyRenderer.resize(keyWidth, keyHeight);
@@ -278,10 +284,11 @@ function drawKey() {
     let scoreKey = new Stave(margin.left, 0, keyWidth - margin.left - margin.right);
     scoreKey.addClef("treble").setContext(keyContext).draw();
 
+    //since all points needed to display in the key are already pre-determined and not reliant on external data, we can declare keyNotes already filled with notes from the start
     let keyNotes = [
-        new StaveNote({keys: ["c/4"], duration: "q"}).addModifier(new Annotation("<4 hours").setVerticalJustification("bottom"), 0),
+        new StaveNote({keys: ["c/4"], duration: "q"}).addModifier(new Annotation("<4 hours").setVerticalJustification("bottom"), 0), //here we have a new element, addModifier, which adds an additional svg element to a note object (in this case an annotation, to display which values are which in the key)
 
-        new StaveNote({keys: ["c/5"], duration: "q"}).addModifier(new Annotation(">15 hours").setVerticalJustification("top"), 0),
+        new StaveNote({keys: ["c/5"], duration: "q"}).addModifier(new Annotation(">15 hours").setVerticalJustification("bottom"), 0),
 
         new StaveNote({keys: ["f/4"], duration: "16"}).addModifier(new Annotation("<50 words").setVerticalJustification("bottom"), 0),
 
@@ -295,6 +302,9 @@ function drawKey() {
 
     ]
 
+    keyNotes[0].addModifier(new Annotation("Time online:").setVerticalJustification("top"), 0)
+    keyNotes[2].addModifier(new Annotation("Words written:").setVerticalJustification("top"), 0)
+    //once again this part of the code is identical to the equivalent part in drawVisualization
     const keyVoice = new Voice({
         num_beats: keyNotes.length,
         beat_value: 4
