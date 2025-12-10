@@ -1,0 +1,12 @@
+body {
+    font-family: "Cambria", "Cochin", "Georgia", "Times", "Times New Roman", serif;
+    font-size: 16pt;
+}
+
+.axis { /* used by d3.js when creating an axis */
+    font-size: 16pt;
+}
+
+.legend {
+    font-size: 12px;
+}
